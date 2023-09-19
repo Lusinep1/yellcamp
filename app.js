@@ -12,20 +12,24 @@ async function main() {
   console.log("Database Connected");
 }
 
-app.set("view eengine", "ejs");
+app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.get("/makecampground", async (req, res) => {
-  //   const camp = new Campground({
-  //     title: "My Backyard",
-  //     price: "cheap camping",
-  //   });
-  //   await camp.save();
-  res.send(camp);
+//Index
+app.get("/campgrounds", async (req, res) => {
+  const campgrounds = await Campground.find({});
+  res.render("campgrounds/index", { campgrounds });
+});
+
+//Show
+app.get("/campgrounds/:id", async (req, res) => {
+  const campground = await Campground.findById(req.params.id);
+  res.render("campgrounds/show", { campground });
 });
 
 app.listen(port, () => {
