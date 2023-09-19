@@ -10,6 +10,18 @@
     <h2><%= campground.location %></h2>
     <div>
       <a href="/campgrounds">Back to Index Page</a>
+      <a href="/campgrounds/new">/Make a New Campground</a>
+      <a href="/campgrounds/<%= campground._id %>/edit"
+        >/Edit This Campground</a
+      >
     </div>
+    <section>
+      <form
+        action="/campgrounds/<%= campground.id %>?_method=DELETE"
+        method="post"
+      >
+        <button>Delete</button>
+      </form>
+    </section>
   </body>
 </html>
