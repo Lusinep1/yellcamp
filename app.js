@@ -6,7 +6,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const Campground = require("./models/campground");
 const mongoose = require("mongoose");
-
+//neznayka
 main().catch((err) => console.log(err));
 
 async function main() {
