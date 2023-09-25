@@ -7,6 +7,8 @@ const ejsMate = require("ejs-mate");
 const Campground = require("./models/campground");
 const ExpressError = require("./utils/ExpressError");
 const catchAsync = require("./utils/catchAsync");
+
+const { campgroundSchema } = require("./schemas");
 const mongoose = require("mongoose");
 //neznayka
 main().catch((err) => console.log(err));
@@ -21,6 +23,16 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
+
+const validateCampground = (req, res, next) => {
+  const { error, value } = campgroundSchema.validate(req.body);
+  if (error) {
+    const msg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -43,8 +55,8 @@ app.get("/campgrounds/new", (req, res) => {
 //Create
 app.post(
   "/campgrounds",
-  catchAsync(async (req, res, next) => {
-    if (!req.body.campground) throw new ExpressError("mi ashxatcra", 401);
+  validateCampground,
+  catchAsync(async (req, res) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground.id}`);
@@ -63,6 +75,7 @@ app.get(
 //Update
 app.put(
   "/campgrounds/:id",
+  validateCampground,
   catchAsync(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(
@@ -94,7 +107,12 @@ app.get(
 
 // will run if nothing else is matched
 app.all("*", (req, res, next) => {
-  next(new ExpressError("This is from our custom class", 404));
+  next(
+    new ExpressError(
+      "will run if nothing else is matched with 404 status code",
+      404
+    )
+  );
 });
 
 //error handling
