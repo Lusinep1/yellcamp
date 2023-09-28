@@ -27,5 +27,42 @@
       </div>
       <div class="card-footer text-muted">2 days ago</div>
     </div>
+    <h2>Leave a Review</h2>
+    <form
+      novalidate
+      action="/campgrounds/<%= campground._id %>/reviews"
+      method="post"
+      class="mb-3 validated-form"
+    >
+      <div class="mb-3">
+        <label class="form-label" for="rating">Rating</label>
+        <input
+          type="range"
+          name="review[rating]"
+          id="rating"
+          class="form-range"
+          min="1"
+          max="5"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="body">Review</label>
+        <textarea
+          required
+          class="form-control"
+          id="body"
+          name="review[body]"
+          cols="30"
+          rows="3"
+        ></textarea>
+        <div class="valid-feedback">Looks good!</div>
+      </div>
+      <button class="btn btn-success">Submit</button>
+    </form>
+    <div class="mb-3">
+      <% for(let review of campground.reviews){%>
+      <p><%= review.body %></p>
+      <% }%>
+    </div>
   </div>
 </div>
