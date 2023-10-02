@@ -133,6 +133,12 @@ app.post(
     res.redirect(`/campgrounds/${campground._id}`);
   })
 );
+app.delete("/campgrounds/:id/reviews/:reviewId", async (req, res) => {
+  const { id, reviewId } = req.params;
+  await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+  await Review.findByIdAndDelete(reviewId);
+  res.redirect(`/campgrounds/${id}`);
+});
 
 // will run if nothing else is matched
 app.all("*", (req, res, next) => {

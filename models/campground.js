@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+// const { campgroundSchema } = require("../schemas");
+const Review = require("./review");
 const Schema = mongoose.Schema;
 
 const CampgroundScema = new Schema({
@@ -13,6 +15,16 @@ const CampgroundScema = new Schema({
       ref: "Review",
     },
   ],
+});
+
+CampgroundScema.post("findOneAndDelete", async (doc) => {
+  if (doc) {
+    await Review.deleteMany({
+      _id: {
+        $in: doc.reviews,
+      },
+    });
+  }
 });
 
 module.exports = mongoose.model("Campground", CampgroundScema);
