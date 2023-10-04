@@ -37,6 +37,7 @@ router.post(
   catchAsync(async (req, res) => {
     const campground = new Campground(req.body.campground);
     await campground.save();
+    req.flash("success", "You have successfully made a new campground");
     res.redirect(`/campgrounds/${campground.id}`);
   })
 );
