@@ -6,11 +6,15 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const User = require("./models/user");
 
 const ExpressError = require("./utils/ExpressError");
 
-const campgrounds = require("./routes/campground");
-const reviews = require("./routes/review");
+const campgroundRoutes = require("./routes/campground");
+const reviewRoutes = require("./routes/review");
+const userRoutes = require("./routes/users");
 
 const { campgroundSchema, reviewSchema } = require("./schemas");
 const mongoose = require("mongoose");
@@ -43,6 +47,16 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 app.use(flash());
+
+//passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new localStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
@@ -50,8 +64,9 @@ app.use((req, res, next) => {
 });
 
 //routes
-app.use("/campgrounds", campgrounds);
-app.use("/campgrounds/:id/reviews", reviews);
+app.use("/campgrounds", campgroundRoutes);
+app.use("/campgrounds/:id/reviews", reviewRoutes);
+app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
