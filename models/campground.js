@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const { campgroundSchema } = require("../schemas");
 const Review = require("./review");
 const Schema = mongoose.Schema;
 
@@ -9,6 +8,10 @@ const CampgroundScema = new Schema({
   price: Number,
   description: String,
   location: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   reviews: [
     {
       type: Schema.Types.ObjectId,
