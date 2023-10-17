@@ -67,6 +67,12 @@ module.exports.updateCampground = async (req, res) => {
   }));
   campground.images.push(...imgs);
   await campground.save();
+  if (req.body.deleteImages) {
+    await campground.updateOne({
+      $pull: { images: { filename: { $in: req.body.deleteImages } } },
+    });
+    console.log(campground);
+  }
   req.flash(
     "success",
     `You have successfully updated '${campground.title}' campground`
