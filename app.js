@@ -74,7 +74,7 @@ app.use("/campgrounds/:id/reviews", reviewRoutes);
 app.use("/", userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.render("home");
 });
 
 // will run if nothing else is matched
