@@ -13,6 +13,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user");
+const helmet = require("helmet");
 
 const mongoSanitize = require("express-mongo-sanitize");
 
@@ -60,6 +61,7 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 //passport
 app.use(passport.initialize());
