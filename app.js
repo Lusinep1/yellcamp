@@ -22,13 +22,14 @@ const ExpressError = require("./utils/ExpressError");
 const campgroundRoutes = require("./routes/campground");
 const reviewRoutes = require("./routes/review");
 const userRoutes = require("./routes/users");
+// const dbUrl = process.env.DB_URL;
 
 const { campgroundSchema, reviewSchema } = require("./schemas");
 const mongoose = require("mongoose");
 const campground = require("./models/campground");
 //neznayka
 main().catch((err) => console.log(err));
-
+//"mongodb://127.0.0.1:27017/YELL-CAMP"
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/YELL-CAMP");
   console.log("Database Connected");
