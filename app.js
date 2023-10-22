@@ -14,6 +14,8 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user");
 
+const mongoSanitize = require("express-mongo-sanitize");
+
 const ExpressError = require("./utils/ExpressError");
 
 const campgroundRoutes = require("./routes/campground");
@@ -37,6 +39,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  mongoSanitize({
+    replaceWith: "_",
+  })
+);
 
 //session
 const sessionConfig = {
@@ -62,6 +69,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
+  console.log(req.query);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
