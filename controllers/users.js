@@ -13,11 +13,11 @@ module.exports.register = async (req, res, next) => {
     const registeredUser = await User.register(user, password);
     req.login(registeredUser, (err) => {
       if (err) return next(err);
-      req.flash("success", "Welcome to YellCamp");
+      // req.flash("success", "Welcome to YellCamp");
       res.redirect("/campgrounds");
     });
   } catch (error) {
-    req.flash("error", error.message);
+    // req.flash("error", error.message);
     res.redirect("/register");
   }
 };
@@ -29,7 +29,7 @@ module.exports.renderLogin = (req, res) => {
 
 //login a user/passport
 module.exports.login = (req, res) => {
-  req.flash("success", `Welcome back!`);
+  // req.flash("success", `Welcome back!`);
   const redirectUrl = res.locals.returnTo || "/campgrounds";
   res.redirect(redirectUrl);
 };
@@ -40,7 +40,7 @@ module.exports.logout = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    req.flash("success", "Goodbye!");
+    // req.flash("success", "Goodbye!");
     res.redirect("/campgrounds");
   });
 };
