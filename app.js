@@ -22,7 +22,11 @@ const ExpressError = require("./utils/ExpressError");
 const campgroundRoutes = require("./routes/campground");
 const reviewRoutes = require("./routes/review");
 const userRoutes = require("./routes/users");
-// const dbUrl = process.env.DB_URL;
+const MongoStore = require("connect-mongo");
+
+/// avelcnel
+// const dbUrl = process.env.DB_URL; husov em khishem
+const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/YELL-CAMP";
 
 const { campgroundSchema, reviewSchema } = require("./schemas");
 const mongoose = require("mongoose");
@@ -31,7 +35,7 @@ const campground = require("./models/campground");
 main().catch((err) => console.log(err));
 //"mongodb://127.0.0.1:27017/YELL-CAMP"
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/YELL-CAMP");
+  await mongoose.connect(dbUrl);
   console.log("Database Connected");
 }
 
@@ -47,10 +51,26 @@ app.use(
   })
 );
 
+/// avelcnel
+const secret = process.env.SECRET || "thisshouldbeabettersecret!";
+
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret,
+  },
+});
+
+store.on("error", function (e) {
+  console.log("session store error", e);
+});
+
 //session
 const sessionConfig = {
+  store,
   name: "session",
-  secret: "thisshouldbeabettersecret",
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie: {
