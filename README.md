@@ -11,7 +11,7 @@ Based on Colt Steel's udemy course.
 
 ## Getting Started
 
-To get started with YellCamp, you can visit the [YellCamp website on render.com]([https://yellcamp.com](https://yellcamp.onrender.com/?fbclid=IwAR0FpgoUuYvNeiLJt627NWc6bftQJaQbv471NZnu3hy2y8tI9CfskeMcIf8)) or clone this repository to run your own instance locally. 
+To get started with YellCamp, you can visit the [YellCamp website on render.com]([https://yellcamp.com](https://yellcamp.onrender.com/?fbclid=IwAR0FpgoUuYvNeiLJt627NWc6bftQJaQbv471NZnu3hy2y8tI9CfskeMcIf8)) or clone this repository to run your own instance locally. npm install, node app.js
 
 ## Technologies Used
 
